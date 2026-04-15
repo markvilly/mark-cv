@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mark Paul Nkulila — Resume</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
@@ -133,6 +134,15 @@
 
     /* ── Left comment wrapper ── */
     .left-tag { display: block; white-space: pre; line-height: 1.7; font-size: 0.74rem; }
+
+    /* ── Links inside string tokens ── */
+    .str a {
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-color: rgba(206, 145, 120, 0.45);
+      text-underline-offset: 2px;
+    }
+    .str a:hover { text-decoration-color: var(--string); }
 
     /* scrollbar */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -366,11 +376,11 @@
         <span class="ln i1"><span class="punct">{</span></span>
         <span class="ln i2"><span class="kw">public string</span> <span class="param">NAME      </span> <span class="punct">=</span> <span class="str">"Mark Paul Nkulila"</span><span class="punct">;</span></span>
         <span class="ln i2"><span class="kw">public string</span> <span class="param">TITLE     </span> <span class="punct">=</span> <span class="str">"Frontend Engineer | Full-Stack &amp; Mobile Developer"</span><span class="punct">;</span></span>
-        <span class="ln i2"><span class="kw">public string</span> <span class="param">EMAIL     </span> <span class="punct">=</span> <span class="str">"markpaulbusiness66@gmail.com"</span><span class="punct">;</span></span>
+        <span class="ln i2"><span class="kw">public string</span> <span class="param">EMAIL     </span> <span class="punct">=</span> <span class="str">"<a href="mailto:markpaulbusiness66@gmail.com">markpaulbusiness66@gmail.com</a>"</span><span class="punct">;</span></span>
         <span class="ln i2"><span class="kw">public string</span> <span class="param">PHONE     </span> <span class="punct">=</span> <span class="str">"+255 686 384 019"</span><span class="punct">;</span></span>
         <span class="ln i2"><span class="kw">public string</span> <span class="param">LOCATION  </span> <span class="punct">=</span> <span class="str">"Dar es Salaam, Tanzania"</span><span class="punct">;</span></span>
-        <span class="ln i2"><span class="kw">public string</span> <span class="param">GITHUB    </span> <span class="punct">=</span> <span class="str">"github.com/markvilly"</span><span class="punct">;</span></span>
-        <span class="ln i2"><span class="kw">public string</span> <span class="param">LINKEDIN  </span> <span class="punct">=</span> <span class="str">"linkedin.com/in/markpaulart"</span><span class="punct">;</span></span>
+        <span class="ln i2"><span class="kw">public string</span> <span class="param">GITHUB    </span> <span class="punct">=</span> <span class="str">"<a href="https://github.com/markvilly" target="_blank" rel="noopener">github.com/markvilly</a>"</span><span class="punct">;</span></span>
+        <span class="ln i2"><span class="kw">public string</span> <span class="param">LINKEDIN  </span> <span class="punct">=</span> <span class="str">"<a href="https://linkedin.com/in/mark-paul-aab059234/" target="_blank" rel="noopener">linkedin.com/in/mark-paul-aab059234/</a>"</span><span class="punct">;</span></span>
         <span class="ln i1"><span class="punct">}</span></span>
 
         <span class="gap"></span>
