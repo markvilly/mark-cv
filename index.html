@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mark Paul Nkulila — Resume</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0d1117;
+      --bg-left:    #10161e;
+      --bg-right:   #0d1117;
+      --bg-tab:     #010409;
+      --border:     #21262d;
+      --accent:     #1f6feb;
+      --line-num:   #3d444d;
+      --divider:    #21262d;
+
+      --kw:         #569cd6;
+      --type:       #4ec9b0;
+      --string:     #ce9178;
+      --comment:    #6a9955;
+      --number:     #b5cea8;
+      --punct:      #c9d1d9;
+      --method:     #dcdcaa;
+      --param:      #9cdcfe;
+    }
+
+    html { font-size: 12.5px; }
+
+    body {
+      background: var(--bg);
+      color: var(--punct);
+      font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ── Shell ── */
+    .shell { display: flex; flex-direction: column; min-height: 100vh; }
+
+    /* ── Tab bar ── */
+    .tab-bar {
+      background: var(--bg-tab);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: stretch; height: 35px; flex-shrink: 0;
+    }
+    .tab {
+      padding: 0 18px; font-size: 0.78rem; color: #6e7681;
+      display: flex; align-items: center; gap: 8px;
+      border-right: 1px solid var(--border); cursor: default; user-select: none;
+    }
+    .tab.active {
+      background: var(--bg-right); color: var(--punct);
+      border-top: 1.5px solid var(--accent);
+    }
+    .tab-dot { width: 7px; height: 7px; border-radius: 50%; background: #388bfd; }
+    .tab-ext { font-size: 0.68rem; color: var(--line-num); }
+
+    /* ── Status bar ── */
+    .status-bar {
+      background: var(--accent); color: #fff; font-size: 0.7rem;
+      padding: 2px 14px; display: flex; align-items: center; gap: 20px;
+      flex-shrink: 0; order: 99;
+    }
+    .status-bar .right { margin-left: auto; }
+
+    /* ── Main editor body ── */
+    .editor-body { display: flex; flex: 1; overflow: hidden; }
+
+    /* ── Accent strip ── */
+    .accent-strip { width: 3px; background: var(--accent); flex-shrink: 0; }
+
+    /* ── Gutter ── */
+    .gutter {
+      background: var(--bg-tab); color: var(--line-num); font-size: 0.74rem;
+      padding: 20px 10px 20px 14px; text-align: right; user-select: none;
+      line-height: 1.7; border-right: 1px solid var(--border); flex-shrink: 0;
+      min-width: 46px;
+    }
+    .gutter span { display: block; }
+
+    /* ── Two-column split ── */
+    .columns { display: flex; flex: 1; overflow: hidden; }
+
+    .col-left {
+      width: 260px; flex-shrink: 0;
+      background: var(--bg-left);
+      border-right: 1px solid var(--divider);
+      padding: 20px 16px 40px 18px;
+      overflow-y: auto; overflow-x: hidden;
+    }
+
+    .col-right {
+      flex: 1;
+      background: var(--bg-right);
+      padding: 20px 36px 60px 24px;
+      overflow-y: auto; overflow-x: auto;
+    }
+
+    /* ── Tokens ── */
+    .kw     { color: var(--kw); }
+    .type   { color: var(--type); }
+    .str    { color: var(--string); }
+    .cmt    { color: var(--comment); font-style: italic; }
+    .num    { color: var(--number); }
+    .method { color: var(--method); }
+    .param  { color: var(--param); }
+    .punct  { color: var(--punct); }
+    .dim    { color: var(--line-num); }
+
+    /* ── Line helpers ── */
+    .ln  { display: block; white-space: pre; line-height: 1.7; min-height: 1.7em; }
+    .i1  { padding-left: 2ch; }
+    .i2  { padding-left: 4ch; }
+    .i3  { padding-left: 6ch; }
+    .gap { display: block; height: 1.7em; }
+
+    /* ── Photo ── */
+    .photo-box {
+      width: 190px; height: 190px; border-radius: 6px;
+      border: 1.5px solid var(--border);
+      background: #161b22; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--line-num); font-size: 0.62rem; text-align: center;
+      margin-bottom: 12px;
+    }
+    .photo-box img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ── Left comment wrapper ── */
+    .left-tag { display: block; white-space: pre; line-height: 1.7; font-size: 0.74rem; }
+
+    /* scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-tab); }
+    ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+
+    /* ── Responsive — tablet (≤900px) ── */
+    @media (max-width: 900px) {
+      html { font-size: 11.5px; }
+
+      /* Hide chrome elements that waste space */
+      .gutter, .accent-strip { display: none; }
+      .tab:not(.active) { display: none; }
+
+      /* Let the whole page scroll naturally */
+      body { overflow-x: hidden; }
+      .shell { min-height: 100vh; height: auto; }
+      .editor-body { overflow: visible; height: auto; flex: none; }
+      .columns { flex-direction: column; overflow: visible; height: auto; flex: none; }
+
+      /* Left column: full-width 2-up grid for enums */
+      .col-left {
+        width: 100%;
+        border-right: none;
+        border-bottom: 2px solid var(--divider);
+        padding: 16px 16px 20px;
+        overflow: visible;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 28px;
+        align-items: start;
+      }
+      /* Photo and its comment tag span both columns */
+      .photo-box { grid-column: 1 / -1; width: 100px; height: 100px; margin-bottom: 8px; }
+      .left-tag  { grid-column: 1 / -1; margin-bottom: 8px; }
+      /* First gap after photo also spans */
+      .col-left > .gap:first-of-type { grid-column: 1 / -1; height: 0.5em; }
+
+      /* Right column: full-width */
+      .col-right { padding: 16px 16px 40px; overflow: visible; }
+
+      /* Allow long lines to wrap */
+      .ln { white-space: pre-wrap; word-break: break-word; }
+
+      /* Status bar: trim middle items, keep name */
+      .status-bar { font-size: 0.65rem; gap: 10px; padding: 3px 10px; flex-wrap: wrap; }
+      .status-bar span:nth-child(n+3):not(.right) { display: none; }
+      .status-bar .right { margin-left: auto; }
+    }
+
+    /* ── Responsive — phone (≤520px) ── */
+    @media (max-width: 520px) {
+      html { font-size: 10px; }
+
+      .tab-bar { height: 30px; }
+      .tab { padding: 0 12px; font-size: 0.72rem; }
+
+      /* Single column on small phones */
+      .col-left { grid-template-columns: 1fr; padding: 14px 12px 16px; }
+      .photo-box { width: 80px; height: 80px; }
+
+      .col-right { padding: 14px 12px 32px; }
+
+      /* Tighter indentation */
+      .i1 { padding-left: 1.5ch; }
+      .i2 { padding-left: 3ch; }
+      .i3 { padding-left: 4.5ch; }
+
+      .status-bar .right { display: none; }
+    }
+
+    /* ── Print ── */
+    @media print {
+      @page { size: A4; margin: 6mm 5mm; }
+      html { font-size: 9px; }
+      body { background: var(--bg) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .tab-bar, .status-bar, .accent-strip { display: none; }
+      .editor-body, .columns { overflow: visible; }
+      .col-left  { background: var(--bg-left)  !important; overflow: visible; width: 220px; }
+      .col-right { overflow: visible; }
+      .kw     { color: var(--kw)     !important; }
+      .type   { color: var(--type)   !important; }
+      .str    { color: var(--string) !important; }
+      .cmt    { color: var(--comment)!important; }
+      .num    { color: var(--number) !important; }
+      .method { color: var(--method) !important; }
+      .param  { color: var(--param)  !important; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- Tab bar -->
+  <div class="tab-bar">
+    <div class="tab active">
+      <div class="tab-dot"></div>
+      MarkPaulNkulila.cs
+      <span class="tab-ext">C#</span>
+    </div>
+    <div class="tab">References.cs</div>
+  </div>
+
+  <div class="editor-body">
+    <div class="accent-strip"></div>
+    <div class="gutter" id="gutter"></div>
+
+    <div class="columns">
+
+      <!-- ═══════════════════════════════════════════════════ LEFT COLUMN -->
+      <div class="col-left">
+
+        <!-- Photo -->
+        <div class="photo-box">
+          <img src="Mark.jpeg" alt="Mark Paul Nkulila" />
+        </div>
+        <span class="left-tag cmt">// &lt;img src="Mark.jpeg" /&gt;</span>
+
+        <span class="gap"></span>
+
+        <!-- PLATFORMS -->
+        <span class="ln"><span class="kw">public enum</span> <span class="type">PLATFORMS</span></span>
+        <span class="ln"><span class="punct">{</span></span>
+        <span class="ln i1"><span class="param">Web</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">Mobile</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">Desktop</span></span>
+        <span class="ln"><span class="punct">}</span></span>
+
+        <span class="gap"></span>
+
+        <!-- LANGUAGES (code) -->
+        <span class="ln"><span class="kw">public enum</span> <span class="type">LANGUAGES</span></span>
+        <span class="ln"><span class="punct">{</span></span>
+        <span class="ln i1"><span class="param">TypeScript</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">JavaScript</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">Dart</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">Java</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">Python</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">SQL</span></span>
+        <span class="ln"><span class="punct">}</span></span>
+
+        <span class="gap"></span>
+
+        <!-- FRAMEWORKS -->
+        <span class="ln"><span class="kw">public enum</span> <span class="type">FRAMEWORKS</span></span>
+        <span class="ln"><span class="punct">{</span></span>
+        <span class="ln i1"><span class="param">React</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">Angular</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">NextJs</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">Flutter</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">ReactNative</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">NestJS</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">SpringBoot</span></span>
+        <span class="ln"><span class="punct">}</span></span>
+
+        <span class="gap"></span>
+
+        <!-- TOOLS -->
+        <span class="ln"><span class="kw">public enum</span> <span class="type">TOOLS</span></span>
+        <span class="ln"><span class="punct">{</span></span>
+        <span class="ln i1"><span class="param">Git</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">GitHub</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">Docker</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">Figma</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">Postman</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">ChromeDevTools</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">TailwindCSS</span></span>
+        <span class="ln"><span class="punct">}</span></span>
+
+        <span class="gap"></span>
+
+        <!-- DATABASES -->
+        <span class="ln"><span class="kw">public enum</span> <span class="type">DATABASES</span></span>
+        <span class="ln"><span class="punct">{</span></span>
+        <span class="ln i1"><span class="param">PostgreSQL</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">MySQL</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">Firebase</span></span>
+        <span class="ln"><span class="punct">}</span></span>
+
+        <span class="gap"></span>
+
+        <!-- SPOKEN LANGUAGES -->
+        <span class="ln"><span class="kw">public enum</span> <span class="type">LANGUES</span></span>
+        <span class="ln"><span class="punct">{</span></span>
+        <span class="ln i1"><span class="cmt">// Native</span></span>
+        <span class="ln i1"><span class="param">ENGLISH</span>  <span class="punct">=</span> <span class="num">C1</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="cmt">// Native</span></span>
+        <span class="ln i1"><span class="param">SWAHILI</span>  <span class="punct">=</span> <span class="num">C1</span></span>
+        <span class="ln"><span class="punct">}</span></span>
+
+        <span class="gap"></span>
+
+        <!-- PROFILE -->
+        <span class="ln"><span class="kw">public enum</span> <span class="type">PROFILE</span></span>
+        <span class="ln"><span class="punct">{</span></span>
+        <span class="ln i1"><span class="param">ProblemSolver</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">SelfDirected</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">Collaborative</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">DetailOriented</span><span class="punct">,</span></span>
+        <span class="ln i1"><span class="param">ClientFocused</span></span>
+        <span class="ln"><span class="punct">}</span></span>
+
+      </div><!-- /col-left -->
+
+      <!-- ═══════════════════════════════════════════════════ RIGHT COLUMN -->
+      <div class="col-right">
+
+        <!-- Summary -->
+        <span class="ln cmt">/// &lt;summary&gt;</span>
+        <span class="ln cmt">///   Frontend-led Full-Stack &amp; Mobile Developer with</span>
+        <span class="ln cmt">///   production experience in Angular, React, Next.js,</span>
+        <span class="ln cmt">///   Flutter and NestJS. Specialises in translating Figma</span>
+        <span class="ln cmt">///   designs into pixel-accurate, accessible interfaces</span>
+        <span class="ln cmt">///   and integrating robust REST APIs end-to-end.</span>
+        <span class="ln cmt">///   Open to freelance work and full-time roles.</span>
+        <span class="ln cmt">///   Available immediately.</span>
+        <span class="ln cmt">/// &lt;/summary&gt;</span>
+
+        <span class="gap"></span>
+
+        <!-- using -->
+        <span class="ln"><span class="kw">using</span> System<span class="punct">;</span></span>
+        <span class="ln"><span class="kw">using</span> Developer<span class="punct">.</span>Portfolio<span class="punct">;</span></span>
+        <span class="ln"><span class="kw">namespace</span> <span class="type">Resume</span></span>
+        <span class="ln"><span class="punct">{</span></span>
+
+        <span class="gap"></span>
+
+        <!-- ── INFORMATION ── -->
+        <span class="ln i1"><span class="kw">public class</span> <span class="type">INFORMATION</span></span>
+        <span class="ln i1"><span class="punct">{</span></span>
+        <span class="ln i2"><span class="kw">public string</span> <span class="param">NAME      </span> <span class="punct">=</span> <span class="str">"Mark Paul Nkulila"</span><span class="punct">;</span></span>
+        <span class="ln i2"><span class="kw">public string</span> <span class="param">TITLE     </span> <span class="punct">=</span> <span class="str">"Frontend Engineer | Full-Stack &amp; Mobile Developer"</span><span class="punct">;</span></span>
+        <span class="ln i2"><span class="kw">public string</span> <span class="param">EMAIL     </span> <span class="punct">=</span> <span class="str">"markpaulbusiness66@gmail.com"</span><span class="punct">;</span></span>
+        <span class="ln i2"><span class="kw">public string</span> <span class="param">PHONE     </span> <span class="punct">=</span> <span class="str">"+255 686 384 019"</span><span class="punct">;</span></span>
+        <span class="ln i2"><span class="kw">public string</span> <span class="param">LOCATION  </span> <span class="punct">=</span> <span class="str">"Dar es Salaam, Tanzania"</span><span class="punct">;</span></span>
+        <span class="ln i2"><span class="kw">public string</span> <span class="param">GITHUB    </span> <span class="punct">=</span> <span class="str">"github.com/markvilly"</span><span class="punct">;</span></span>
+        <span class="ln i2"><span class="kw">public string</span> <span class="param">LINKEDIN  </span> <span class="punct">=</span> <span class="str">"linkedin.com/in/markpaulart"</span><span class="punct">;</span></span>
+        <span class="ln i1"><span class="punct">}</span></span>
+
+        <span class="gap"></span>
+
+        <!-- ── EDUCATION ── -->
+        <span class="ln i1"><span class="kw">public partial class</span> <span class="type">EDUCATION</span> <span class="punct">:</span> <span class="type">Universities</span></span>
+        <span class="ln i1"><span class="punct">{</span></span>
+        <span class="ln i2"><span class="kw">private void</span> <span class="method">UniqueAcademy</span><span class="punct">()</span></span>
+        <span class="ln i2"><span class="punct">{</span></span>
+        <span class="ln i3"><span class="kw">var</span> <span class="param">_Degree      </span> <span class="punct">=</span> <span class="str">"Degree in Information Security"</span><span class="punct">;</span></span>
+        <span class="ln i3"><span class="kw">var</span> <span class="param">_Institution </span> <span class="punct">=</span> <span class="str">"Unique Academy"</span><span class="punct">;</span></span>
+        <span class="ln i3"><span class="kw">var</span> <span class="param">_Date        </span> <span class="punct">=</span> Range<span class="punct">(</span>start<span class="punct">:</span> <span class="str">"2019"</span><span class="punct">,</span> end<span class="punct">:</span> <span class="str">"2021"</span><span class="punct">);</span></span>
+        <span class="ln i3 cmt">/* Coursework: Web Development, Database Management,</span>
+        <span class="ln i3 cmt">   Software Design, Enterprise Security &amp; Risk Frameworks */</span>
+        <span class="ln i2"><span class="punct">}</span></span>
+        <span class="ln i1"><span class="punct">}</span></span>
+
+        <span class="gap"></span>
+
+        <!-- ── EXPERIENCE ── -->
+        <span class="ln i1"><span class="kw">public static class</span> <span class="type">EXPERIENCE</span></span>
+        <span class="ln i1"><span class="punct">{</span></span>
+
+        <!-- Medikea -->
+        <span class="ln i2"><span class="kw">public void</span> <span class="method">Medikea_FrontendEngineer</span><span class="punct">()</span></span>
+        <span class="ln i2"><span class="punct">{</span></span>
+        <span class="ln i3"><span class="kw">var</span> <span class="param">_Duration </span> <span class="punct">=</span> Range<span class="punct">(</span>start<span class="punct">:</span> <span class="str">"Feb 2025"</span><span class="punct">,</span> end<span class="punct">:</span> <span class="str">"Present"</span><span class="punct">);</span></span>
+        <span class="ln i3"><span class="kw">var</span> <span class="param">_Role     </span> <span class="punct">=</span> <span class="str">"Frontend Engineer | UI/UX Designer | Product Contributor"</span><span class="punct">;</span></span>
+        <span class="ln i3"><span class="kw">var</span> <span class="param">_Type     </span> <span class="punct">=</span> <span class="kw">new</span> <span class="type">FullTime</span><span class="punct">();</span></span>
+        <span class="gap"></span>
+        <span class="ln i3 cmt">/* Built and maintained responsive healthcare interfaces using</span>
+        <span class="ln i3 cmt">   Angular, Flutter and component-based architecture.</span>
+        <span class="ln i3 cmt">   Translated Figma designs into pixel-accurate, accessible,</span>
+        <span class="ln i3 cmt">   production-ready code. Designed patient, clinician, and</span>
+        <span class="ln i3 cmt">   operations workflows balancing UX clarity with real-world</span>
+        <span class="ln i3 cmt">   constraints. Integrated REST APIs with dynamic state, loading</span>
+        <span class="ln i3 cmt">   states, and error handling. Optimized mobile performance —</span>
+        <span class="ln i3 cmt">   load times, rendering efficiency, perceived speed. Applied</span>
+        <span class="ln i3 cmt">   ARIA and semantic HTML for inclusive accessibility. */</span>
+        <span class="ln i2"><span class="punct">}</span></span>
+
+        <span class="gap"></span>
+
+        <!-- ITULE / Safiri -->
+        <span class="ln i2"><span class="kw">public void</span> <span class="method">ITULE_Safiri_FullStackEngineer</span><span class="punct">()</span></span>
+        <span class="ln i2"><span class="punct">{</span></span>
+        <span class="ln i3"><span class="kw">var</span> <span class="param">_Duration </span> <span class="punct">=</span> Range<span class="punct">(</span>start<span class="punct">:</span> <span class="str">"Feb 2024"</span><span class="punct">,</span> end<span class="punct">:</span> <span class="str">"Feb 2025"</span><span class="punct">);</span></span>
+        <span class="ln i3"><span class="kw">var</span> <span class="param">_Role     </span> <span class="punct">=</span> <span class="str">"Full Stack Software Engineer"</span><span class="punct">;</span></span>
+        <span class="ln i3"><span class="kw">var</span> <span class="param">_Company  </span> <span class="punct">=</span> <span class="str">"ITULE Company Ltd (Safiri)"</span><span class="punct">;</span></span>
+        <span class="ln i3"><span class="kw">var</span> <span class="param">_Type     </span> <span class="punct">=</span> <span class="kw">new</span> <span class="type">FullTime</span><span class="punct">();</span></span>
+        <span class="gap"></span>
+        <span class="ln i3 cmt">/* Developed responsive web apps with React and Next.js.</span>
+        <span class="ln i3 cmt">   Built admin dashboards and data-heavy interfaces focused</span>
+        <span class="ln i3 cmt">   on usability and clarity. Integrated backend APIs for</span>
+        <span class="ln i3 cmt">   reporting, filtering, and validation. Debugged and optimized</span>
+        <span class="ln i3 cmt">   production UI issues across browsers and screen sizes.</span>
+        <span class="ln i3 cmt">   Collaborated in Agile sprints delivering iterative improvements. */</span>
+        <span class="ln i2"><span class="punct">}</span></span>
+
+        <span class="ln i1"><span class="punct">}</span></span>
+
+        <span class="gap"></span>
+
+        <!-- ── REFERENCES ── -->
+        <span class="ln i1"><span class="kw">public static class</span> <span class="type">REFERENCES</span></span>
+        <span class="ln i1"><span class="punct">{</span></span>
+
+        <span class="ln i2"><span class="kw">public static</span> <span class="type">Reference</span> <span class="method">InventionsTechnologies</span> <span class="punct">=</span> <span class="kw">new</span><span class="punct">()</span></span>
+        <span class="ln i2"><span class="punct">{</span></span>
+        <span class="ln i3"><span class="param">Name     </span> <span class="punct">=</span> <span class="str">"Maryam Baba"</span><span class="punct">,</span></span>
+        <span class="ln i3"><span class="param">Role     </span> <span class="punct">=</span> <span class="str">"Business Development Manager"</span><span class="punct">,</span></span>
+        <span class="ln i3"><span class="param">Company  </span> <span class="punct">=</span> <span class="str">"Inventions Technologies Co Ltd"</span><span class="punct">,</span></span>
+        <span class="ln i3"><span class="param">Email    </span> <span class="punct">=</span> <span class="str">"Maryam.baba@it.co.tz"</span><span class="punct">,</span></span>
+        <span class="ln i3"><span class="param">Phone    </span> <span class="punct">=</span> <span class="str">"+255 672 169 511"</span></span>
+        <span class="ln i2"><span class="punct">};</span></span>
+
+        <span class="gap"></span>
+
+        <span class="ln i2"><span class="kw">public static</span> <span class="type">Reference</span> <span class="method">Medikea</span> <span class="punct">=</span> <span class="kw">new</span><span class="punct">()</span></span>
+        <span class="ln i2"><span class="punct">{</span></span>
+        <span class="ln i3"><span class="param">Name     </span> <span class="punct">=</span> <span class="str">"Shabo Andrew"</span><span class="punct">,</span></span>
+        <span class="ln i3"><span class="param">Role     </span> <span class="punct">=</span> <span class="str">"Lead Mobile App Developer"</span><span class="punct">,</span></span>
+        <span class="ln i3"><span class="param">Company  </span> <span class="punct">=</span> <span class="str">"Medikea"</span><span class="punct">,</span></span>
+        <span class="ln i3"><span class="param">Phone    </span> <span class="punct">=</span> <span class="str">"+255 742 287 568"</span></span>
+        <span class="ln i2"><span class="punct">};</span></span>
+
+        <span class="gap"></span>
+
+        <span class="ln i2"><span class="kw">public static</span> <span class="type">Reference</span> <span class="method">Safiri</span> <span class="punct">=</span> <span class="kw">new</span><span class="punct">()</span></span>
+        <span class="ln i2"><span class="punct">{</span></span>
+        <span class="ln i3"><span class="param">Name     </span> <span class="punct">=</span> <span class="str">"Louis Ngatale"</span><span class="punct">,</span></span>
+        <span class="ln i3"><span class="param">Role     </span> <span class="punct">=</span> <span class="str">"Lead Software Engineer"</span><span class="punct">,</span></span>
+        <span class="ln i3"><span class="param">Company  </span> <span class="punct">=</span> <span class="str">"Safiri"</span><span class="punct">,</span></span>
+        <span class="ln i3"><span class="param">Phone    </span> <span class="punct">=</span> <span class="str">"+255 746 821 320"</span></span>
+        <span class="ln i2"><span class="punct">};</span></span>
+
+        <span class="ln i1"><span class="punct">}</span></span>
+
+        <span class="gap"></span>
+        <span class="ln"><span class="punct">}</span> <span class="cmt">// end namespace Resume</span></span>
+
+      </div><!-- /col-right -->
+    </div><!-- /columns -->
+  </div><!-- /editor-body -->
+
+  <div class="status-bar">
+    <span>&#x2713; Ready</span>
+    <span>C# 12</span>
+    <span>UTF-8</span>
+    <span>Spaces: 2</span>
+    <span class="right">Mark Paul Nkulila &mdash; Frontend Engineer | Full-Stack &amp; Mobile Developer</span>
+  </div>
+
+</div><!-- /shell -->
+
+<script>
+  (function () {
+    const leftCol  = document.querySelector('.col-left');
+    const rightCol = document.querySelector('.col-right');
+    const gutter   = document.getElementById('gutter');
+
+    function buildGutter() {
+      // Skip on mobile where gutter is hidden
+      if (window.innerWidth <= 900) { gutter.innerHTML = ''; return; }
+      const lh    = parseFloat(getComputedStyle(document.body).lineHeight);
+      const h     = Math.max(leftCol.scrollHeight, rightCol.scrollHeight, 500);
+      const total = Math.ceil(h / lh);
+      let html = '';
+      for (let i = 1; i <= total; i++) html += `<span>${i}</span>`;
+      gutter.innerHTML = html;
+    }
+
+    buildGutter();
+    window.addEventListener('resize', buildGutter);
+  })();
+</script>
+</body>
+</html>
