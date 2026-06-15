@@ -1,0 +1,237 @@
+@import "tailwindcss";
+
+/* ── Class-based dark mode (toggled on <html class="dark">) ───────────────── */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Gen X Soft Club · "Dusty Terracotta" semantic tokens ─────────────────── */
+:root {
+  --bg:        #f0e9df;
+  --bg-2:      #e8dfd0;
+  --surface:   rgba(255, 255, 255, 0.55);
+  --surface-2: rgba(255, 255, 255, 0.72);
+  --ink:       #3a332c;
+  --ink-soft:  #6b6157;
+  --clay:      #c9a892;
+  --rose:      #c9a6a0;
+  --sage:      #9ca78d;
+  --accent:    #b0846a;
+  --accent-ink:#fbf6ef;
+  --border:    rgba(58, 51, 44, 0.12);
+  --border-2:  rgba(58, 51, 44, 0.18);
+  --shadow:    rgba(58, 51, 44, 0.12);
+}
+
+.dark {
+  --bg:        #1b1714;
+  --bg-2:      #211c18;
+  --surface:   rgba(43, 36, 31, 0.55);
+  --surface-2: rgba(48, 40, 34, 0.78);
+  --ink:       #ece3d7;
+  --ink-soft:  #b3a797;
+  --clay:      #d6b79f;
+  --rose:      #d4b0a8;
+  --sage:      #aeb897;
+  --accent:    #c99a7c;
+  --accent-ink:#1b1714;
+  --border:    rgba(236, 227, 215, 0.12);
+  --border-2:  rgba(236, 227, 215, 0.20);
+  --shadow:    rgba(0, 0, 0, 0.45);
+}
+
+/* ── Map tokens → Tailwind utilities (inline so dark swap works) ──────────── */
+@theme inline {
+  --color-bg:        var(--bg);
+  --color-bg-2:      var(--bg-2);
+  --color-surface:   var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink:       var(--ink);
+  --color-ink-soft:  var(--ink-soft);
+  --color-clay:      var(--clay);
+  --color-rose:      var(--rose);
+  --color-sage:      var(--sage);
+  --color-accent:    var(--accent);
+  --color-accent-ink:var(--accent-ink);
+  --color-border:    var(--border);
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans:    "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --radius-4xl: 2rem;
+}
+
+/* ── Base layer ───────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv11", "ss01";
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar { width: 11px; height: 11px; }
+  ::-webkit-scrollbar-track { background: var(--bg-2); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--clay);
+    border: 3px solid var(--bg-2);
+    border-radius: 99px;
+  }
+}
+
+/* ── Component helpers ────────────────────────────────────────────────────── */
+@layer components {
+  /* Frosted glass surface */
+  .glass {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.4) inset,
+                0 18px 40px -24px var(--shadow);
+  }
+  .dark .glass {
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+                0 18px 40px -22px var(--shadow);
+  }
+
+  /* Soft mono "eyebrow" label — the subtle dev nod */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* Skill / fact pill */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 1px solid var(--border-2);
+    border-radius: 999px;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.85rem;
+    background: var(--surface-2);
+    transition: transform 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+  }
+  .pill:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
+
+  /* Decorative blurred gradient blob */
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(72px);
+    opacity: 0.55;
+    pointer-events: none;
+    will-change: transform;
+  }
+  .dark .blob { opacity: 0.4; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    border-radius: 999px;
+    padding: 0.72rem 1.35rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease,
+      border-color 0.25s ease, color 0.25s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--accent-ink);
+    box-shadow: 0 12px 30px -12px var(--accent);
+  }
+  .btn-primary:hover { box-shadow: 0 18px 36px -10px var(--accent); }
+  .btn-ghost {
+    background: var(--surface-2);
+    color: var(--ink);
+    border: 1px solid var(--border-2);
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Mono caption tag — dev nod */
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+  }
+}
+
+/* ── Utilities ────────────────────────────────────────────────────────────── */
+
+/* Film-grain overlay for analog texture */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.16;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.dark .grain-overlay { opacity: 0.09; }
+
+/* Scroll-reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s cubic-bezier(0.2, 0.65, 0.3, 1),
+              transform 0.7s cubic-bezier(0.2, 0.65, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* Slow float for hero blobs */
+@keyframes float-slow {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(0, -22px, 0) scale(1.05); }
+}
+.animate-float { animation: float-slow 13s ease-in-out infinite; }
+
+/* Respect reduced-motion everywhere */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .animate-float { animation: none !important; }
+  * { scroll-behavior: auto !important; }
+}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mark Paul Nkulila — Frontend Engineer</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description"
+    content="Mark Paul Nkulila — Frontend-led Full-Stack & Mobile Developer based in Dar es Salaam. Angular, React, Next.js, Flutter & NestJS. Turning Figma into pixel-accurate, accessible interfaces.">
+  <meta name="author" content="Mark Paul Nkulila">
+  <meta name="theme-color" content="#f0e9df" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1b1714" media="(prefers-color-scheme: dark)">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Mark Paul Nkulila — Frontend Engineer">
+  <meta property="og:description"
+    content="Frontend-led Full-Stack & Mobile Developer. Angular · React · Next.js · Flutter · NestJS.">
+  <meta property="og:image" content="Mark.jpeg">
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+
+  <!-- Fonts: Space Grotesk (display) · Hanken Grotesk (body) · JetBrains Mono (mono accents) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Pre-paint theme to avoid flash of wrong color scheme -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        if (t === 'dark') document.documentElement.classList.add('dark');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>

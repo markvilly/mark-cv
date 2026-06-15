@@ -1,0 +1,23 @@
+<!-- Ambient soft-club background: blurred gradient blobs + film grain -->
+<div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
+  <div class="blob -top-40 -left-40 h-[34rem] w-[34rem]" style="background: var(--clay)"></div>
+  <div class="blob top-[18%] -right-48 h-[30rem] w-[30rem]" style="background: var(--rose)"></div>
+  <div class="blob -bottom-56 left-[12%] h-[36rem] w-[36rem]" style="background: var(--sage)"></div>
+</div>
+<div class="grain-overlay" aria-hidden="true"></div>
+
+<a
+  href="#about"
+  class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-accent-ink"
+>Skip to content</a>
+
+<app-nav />
+
+<main>
+  <app-hero />
+  <app-about />
+  <app-skills />
+  <app-experience />
+  <app-references />
+  <app-contact />
+</main>

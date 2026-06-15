@@ -67,3 +67,23 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# Angular
+/dist
+/tmp
+/out-tsc
+/bazel-out
+/.angular/cache
+.sass-cache/
+*.tsbuildinfo
+
+# IDE / editors
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.history/*
+__screenshots__/
+
+# System files
+.DS_Store
+Thumbs.db
