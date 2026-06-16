@@ -48,7 +48,7 @@ import { INFO, TAGLINE } from '../data/resume';
               gsapSplitRevealType="chars"
               gsapSplitRevealOn="load"
               [gsapSplitRevealDelay]="0.2"
-            >Mark Paul <span class="bg-linear-to-r from-accent via-rose to-sage bg-clip-text text-transparent">Nkulila</span></span>
+            >Mark Paul <span class="text-accent">Nkulila</span></span>
           </h1>
 
           <p class="mt-5 font-display text-lg text-ink sm:text-xl">{{ info.title }}</p>
@@ -113,11 +113,8 @@ import { INFO, TAGLINE } from '../data/resume';
             <div class="photo-mono aspect-[4/5] w-full overflow-hidden rounded-[1.5rem]">
               <img src="Mark.jpeg" alt="Portrait of Mark Paul Nkulila" />
             </div>
-            <div class="mt-3 flex items-center justify-between px-1.5">
+            <div class="mt-3 px-1.5">
               <span class="tag">// mark_paul.jpeg</span>
-              <span class="tag inline-flex items-center gap-1.5">
-                <span class="h-2 w-2 rounded-full bg-sage"></span> online
-              </span>
             </div>
           </div>
         </div>

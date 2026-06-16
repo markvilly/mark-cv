@@ -40,7 +40,7 @@ import { INFO } from '../data/resume';
                 [href]="info.socials.github.href"
                 target="_blank"
                 rel="noopener"
-                class="glass grid h-11 w-11 place-items-center rounded-full transition hover:-translate-y-1 hover:text-accent"
+                class="glass grid h-11 w-11 place-items-center rounded-full transition hover:text-accent"
                 aria-label="GitHub profile"
               >
                 <app-icon name="github" [size]="19" />
@@ -49,7 +49,7 @@ import { INFO } from '../data/resume';
                 [href]="info.socials.linkedin.href"
                 target="_blank"
                 rel="noopener"
-                class="glass grid h-11 w-11 place-items-center rounded-full transition hover:-translate-y-1 hover:text-accent"
+                class="glass grid h-11 w-11 place-items-center rounded-full transition hover:text-accent"
                 aria-label="LinkedIn profile"
               >
                 <app-icon name="linkedin" [size]="19" />
