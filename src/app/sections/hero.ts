@@ -1,12 +1,21 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { IconComponent } from '../shared/icon';
 import { RevealDirective } from '../shared/reveal.directive';
+import { ScrambleDirective } from '../shared/scramble.directive';
+import { SplitRevealDirective } from '../shared/split-reveal.directive';
+import { TypewriterDirective } from '../shared/typewriter.directive';
 import { INFO, TAGLINE } from '../data/resume';
 
 @Component({
   selector: 'app-hero',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IconComponent, RevealDirective],
+  imports: [
+    IconComponent,
+    RevealDirective,
+    ScrambleDirective,
+    SplitRevealDirective,
+    TypewriterDirective,
+  ],
   template: `
     <section id="top" class="relative overflow-x-clip px-6 pt-36 pb-16 sm:px-8 sm:pt-44 sm:pb-24">
       <div class="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.12fr_0.88fr] lg:gap-16">
@@ -14,7 +23,7 @@ import { INFO, TAGLINE } from '../data/resume';
         <div reveal>
           <p class="eyebrow mb-5 flex items-center gap-2.5">
             <span class="inline-block h-px w-8 bg-accent/70"></span>
-            // {{ info.roleShort }}
+            <span gsapScramble gsapScrambleOn="load" [gsapScrambleDelay]="0.25">// {{ info.roleShort }}</span>
           </p>
 
           <span
@@ -33,14 +42,22 @@ import { INFO, TAGLINE } from '../data/resume';
             <span class="mb-2 block font-mono text-base font-normal tracking-tight text-ink-soft">
               Hi, I'm
             </span>
-            Mark Paul
-            <span class="bg-linear-to-r from-accent via-rose to-sage bg-clip-text text-transparent">
-              Nkulila
-            </span>
+            <span
+              class="inline-block"
+              gsapSplitReveal
+              gsapSplitRevealType="chars"
+              gsapSplitRevealOn="load"
+              [gsapSplitRevealDelay]="0.2"
+            >Mark Paul <span class="bg-linear-to-r from-accent via-rose to-sage bg-clip-text text-transparent">Nkulila</span></span>
           </h1>
 
           <p class="mt-5 font-display text-lg text-ink sm:text-xl">{{ info.title }}</p>
-          <p class="mt-4 max-w-xl text-lg leading-relaxed text-ink-soft">{{ tagline }}</p>
+          <p
+            class="mt-4 min-h-[5.5rem] max-w-xl text-lg leading-relaxed text-ink-soft sm:min-h-[3.5rem]"
+          >
+            <span class="sr-only">{{ tagline }}</span>
+            <span aria-hidden="true" [gsapTypewriter]="taglinePhrases"></span>
+          </p>
 
           <div class="mt-8 flex flex-wrap items-center gap-3">
             <a href="#contact" class="btn btn-primary">
@@ -93,11 +110,9 @@ import { INFO, TAGLINE } from '../data/resume';
           ></div>
 
           <div class="glass relative rounded-[2rem] p-3">
-            <img
-              src="Mark.jpeg"
-              alt="Portrait of Mark Paul Nkulila"
-              class="aspect-[4/5] w-full rounded-[1.5rem] object-cover"
-            />
+            <div class="photo-mono aspect-[4/5] w-full overflow-hidden rounded-[1.5rem]">
+              <img src="Mark.jpeg" alt="Portrait of Mark Paul Nkulila" />
+            </div>
             <div class="mt-3 flex items-center justify-between px-1.5">
               <span class="tag">// mark_paul.jpeg</span>
               <span class="tag inline-flex items-center gap-1.5">
@@ -113,4 +128,9 @@ import { INFO, TAGLINE } from '../data/resume';
 export class HeroComponent {
   protected readonly info = INFO;
   protected readonly tagline = TAGLINE;
+  protected readonly taglinePhrases = [
+    'I turn Figma into pixel-accurate, accessible interfaces.',
+    'I wire clean UIs to robust REST APIs, end to end.',
+    'Angular · React · Next.js · Flutter · NestJS.',
+  ];
 }

@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { IconComponent } from '../shared/icon';
 import { RevealDirective } from '../shared/reveal.directive';
+import { ScrambleDirective } from '../shared/scramble.directive';
+import { SplitRevealDirective } from '../shared/split-reveal.directive';
 import { INFO } from '../data/resume';
 
 @Component({
   selector: 'app-contact',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IconComponent, RevealDirective],
+  imports: [IconComponent, RevealDirective, ScrambleDirective, SplitRevealDirective],
   template: `
     <section id="contact" class="relative px-6 py-24 sm:px-8 sm:py-28">
       <div class="mx-auto max-w-6xl">
@@ -15,8 +17,8 @@ import { INFO } from '../data/resume';
           <div class="blob -right-12 -bottom-16 h-56 w-56" style="background: var(--rose)"></div>
 
           <div class="relative">
-            <p class="eyebrow mb-4">05 // contact</p>
-            <h2 class="mx-auto max-w-2xl text-4xl sm:text-5xl">
+            <p class="eyebrow mb-4" gsapScramble>05 // contact</p>
+            <h2 class="mx-auto max-w-2xl text-4xl sm:text-5xl" gsapSplitReveal>
               Let's build something soft, sharp &amp; well-made.
             </h2>
             <p class="mx-auto mt-5 max-w-lg text-lg text-ink-soft">

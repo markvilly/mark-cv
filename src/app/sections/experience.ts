@@ -1,18 +1,20 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { IconComponent } from '../shared/icon';
 import { RevealDirective } from '../shared/reveal.directive';
+import { ScrambleDirective } from '../shared/scramble.directive';
+import { SplitRevealDirective } from '../shared/split-reveal.directive';
 import { EDUCATION, EXPERIENCE } from '../data/resume';
 
 @Component({
   selector: 'app-experience',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IconComponent, RevealDirective],
+  imports: [IconComponent, RevealDirective, ScrambleDirective, SplitRevealDirective],
   template: `
     <section id="work" class="relative px-6 py-24 sm:px-8 sm:py-28">
       <div class="mx-auto max-w-6xl">
         <header reveal class="mb-12 max-w-2xl">
-          <p class="eyebrow mb-3">03 // experience</p>
-          <h2 class="text-3xl sm:text-4xl">Where I've been shipping</h2>
+          <p class="eyebrow mb-3" gsapScramble>03 // experience</p>
+          <h2 class="text-3xl sm:text-4xl" gsapSplitReveal>Where I've been shipping</h2>
         </header>
 
         <div class="grid gap-5">

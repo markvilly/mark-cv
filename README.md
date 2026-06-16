@@ -13,6 +13,9 @@ gradient blobs, film grain, and a persisted light/dark theme.
 - **Tailwind CSS v4** (CSS-first `@theme`) with semantic tokens that swap on `.dark`
 - **Fonts:** Space Grotesk (display) · Hanken Grotesk (body) · JetBrains Mono (mono accents)
 - Scroll-reveal via a small `IntersectionObserver` directive — fully `prefers-reduced-motion` aware
+- **GSAP 3** text effects (all plugins now free): `SplitText` char/line reveals, `ScrambleText`
+  decode on the mono labels, `TextPlugin` typewriter tagline — wrapped in `[gsapSplitReveal]` /
+  `[gsapScramble]` / `[gsapTypewriter]` directives, all reduced-motion safe
 - Inline SVG icons (Lucide / Simple Icons) — no emoji
 - Hosting: **Firebase Hosting** (project `mark-cv-7186b`)
 
